@@ -1,0 +1,317 @@
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import bgImage from "../assets/proj.png";
+import { nav } from "framer-motion/client";
+
+export default function Registration() {
+  const brand = "#B896C3"; 
+  const vibrantLavender = "#A36DBD"; 
+
+  const [isLogin, setIsLogin] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    agreeToTerms: false,
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const navigate = useNavigate(); 
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+    if (errors[name]) setErrors({ ...errors, [name]: "" });
+  };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsSubmitting(true);
+
+  //   // setTimeout(() => {
+  //     //console.log(isLogin ? "Login Data:" : "Register Data:", formData);
+
+  //     //Hardcoded Admin Credentials
+  //     const adminEmail = "admin@medibridge.com";
+  //     const adminPassword = "admin123";
+
+  //     if (!isLogin) {
+  //       if (formData.email === adminEmail && formData.password === adminPassword) {
+  //         // // Save admin details
+  //         // localStorage.setItem(
+  //         //   "user",
+  //         //   JSON.stringify({ role: "admin", name: "Admin" })
+  //         // );
+          
+  //         //connecting to backend
+  //         const res = await fetch("http://localhost:5020/api/auth/register", {
+  //           method: "POST",
+  //           headers: {"Content-Type": "application/json"},
+  //           body: JSON.stringify ({
+  //             full_name: formData.fullName,
+  //             email: formData.email,
+  //             password: formData.password
+  //           }),
+  //         });
+
+  //         const data = await res.json();
+  //         if (res.ok) {
+  //           localStorage.setItem("user", JSON.stringify(data.user));
+  //           setSubmitSuccess(true);
+  //           setIsSubmitting(false);
+  //           setTimeout(() => navigate("/login"), 1000);
+  //         }
+
+  //         //Redirect to Admin Dashboard
+  //         setTimeout(() => navigate("/admin"), 1000);
+  //         return;
+  //       } else {
+  //         // //Normal user login
+  //         // localStorage.setItem(
+  //         //   "user",
+  //         //   JSON.stringify({
+  //         //     role: "user",
+  //         //     name: formData.firstName || "Customer",
+  //         //   })
+  //         // );
+
+  //         setSubmitSuccess(true);
+  //         setIsSubmitting(false);
+
+  //         //Redirect to Homepage
+  //         setTimeout(() => navigate("/"), 1000);
+  //         return;
+  //       }
+  //     } else {
+  //       //Registration — default as normal user
+  //       // localStorage.setItem(
+  //       //   "user",
+  //       //   JSON.stringify({
+  //       //     role: "user",
+  //       //     name: `${formData.firstName} ${formData.lastName}`,
+  //       //   })
+  //       // );
+        
+  //     }
+
+  //     setIsSubmitting(false);
+  //     setSubmitSuccess(true);
+  //     setTimeout(() => setSubmitSuccess(false), 2000);
+  //   // }, 1500);
+  // };
+
+  //register logic
+  const handleRegister = async(e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch("http://localhost:5020/api/auth/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          full_name: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await res.json();
+      if(res.ok) {
+        setSubmitSuccess(true);
+        setIsSubmitting(false);
+        //redirection to login page after registration
+        // navigate("/login");
+        setIsLogin(true); // switch to login form
+      } else {
+        console.log("error: ", data.message); //need to say user already registerd
+      } 
+    } catch(err) {
+        console.error("error: ", err);
+        setIsSubmitting(false);
+      }
+    }
+
+    //login logic
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch("http://localhost:5020/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Check if admin
+        if (formData.email === "admin@medibridge.com" && formData.password === "admin123") {
+          localStorage.setItem("user", JSON.stringify({ role: "admin", name: "Admin", token: data.token }));
+          navigate("/admin");
+        } else {
+          localStorage.setItem("user", JSON.stringify({ role: "user", ...data.user, token: data.token }));
+          console.log(localStorage);
+          navigate("/"); // normal home page
+        }
+        setIsSubmitting(false);
+      } else {
+        console.error("Login failed:", data.message);
+        setIsSubmitting(false);
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setIsSubmitting(false);
+    }
+};
+
+  return (
+    <div
+      className="min-h-screen relative"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Navbar />
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+
+      {/* Form container */}
+      <div className="relative flex items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-md bg-white bg-opacity-90 rounded-lg shadow-lg p-6">
+          <h2
+            className="text-2xl md:text-3xl font-extrabold mb-4 text-center"
+            style={{ color: "#2E0249" }}
+          >
+            {isLogin ? "Login" : "Register"}
+          </h2>
+
+          {/* Toggle Login/Register */}
+          <div className="text-center mb-4">
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-purple-600 hover:underline text-sm"
+              style={{ color: vibrantLavender }}
+            >
+              {isLogin
+                ? "Don't have an account? Register"
+                : "Already have an account? Login"}
+            </button>
+          </div>
+
+          <form onSubmit={isLogin ? handleLogin : handleRegister} className="space-y-4">
+            {!isLogin && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                  />
+                </div>
+              </>
+            )}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded-lg focus:ring-purple-500 focus:border-purple-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                />
+                <span
+                  className="absolute right-3 top-2 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </span>
+              </div>
+            </div>
+
+            {!isLogin && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                  />
+                  <span
+                    className="absolute right-3 top-2 cursor-pointer"
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
+                  >
+                    {showConfirmPassword ? <EyeOff /> : <Eye />}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-2 rounded-lg text-white hover:bg-purple-700 transition"
+              style={{ backgroundColor: vibrantLavender }}
+            >
+              {isSubmitting ? "Submitting..." : isLogin ? "Login" : "Register"}
+            </button>
+
+            {submitSuccess && (
+              <p
+                className="text-center mt-2 font-medium"
+                style={{ color: brand }}
+              >
+                {isLogin
+                  ? "Login successful!"
+                  : "Registration successful!"}
+              </p>
+            )}
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
