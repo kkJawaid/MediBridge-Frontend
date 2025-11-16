@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 const ManageProducts = () => {
   const [products, setProducts] = useState([]);
@@ -34,7 +33,7 @@ const ManageProducts = () => {
     }
   };
 
-  // ✅ Handle form input
+  // Handle form input
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -86,7 +85,7 @@ const ManageProducts = () => {
     }
   };
 
-  // ✅ Edit button handler
+  // Edit button handler
   const handleEdit = (product) => {
     setEditingProduct(product);
     setFormData(product);

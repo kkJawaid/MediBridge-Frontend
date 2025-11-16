@@ -22,8 +22,15 @@ import Product from "./pages/Product";
 import Bookmark from "./pages/Bookmark";
 import Review from "./pages/Review";
 import Complaint from "./pages/Complaint";
+import Order from "./pages/Order";
 
 import { Toaster } from "react-hot-toast";
+
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
 const App = () => {
   return (
     <Router>
@@ -34,11 +41,11 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<Profile />} >
-            <Route path="bookmarks" element={<Bookmark /> } />
-            <Route path="reviews" element={<Review /> } />
-            {/* <Route path="/details" element={<Details /> } />
-            <Route path="/orders" element={<Orders /> } /> */}
-            <Route path="complaints" element={<Complaint /> } />
+            <Route path="/profile/" element={<Bookmark />} />
+            <Route path="bookmarks" element={<Bookmark />} />
+            <Route path="reviews" element={<Review />} />
+            <Route path="orders" element={<Order />} />
+            <Route path="complaints" element={<Complaint />} />
           </Route>
           <Route path="/services" element={<Services />} />
           <Route path="/equipment" element={<Equipment />} />
@@ -66,7 +73,9 @@ const App = () => {
             path="/checkout"
             element={
               <ProtectedRoute>
-                <Checkout />
+                <Elements stripe={stripePromise}>
+                  <Checkout />
+                </Elements>
               </ProtectedRoute>
             }
           />

@@ -1,6 +1,6 @@
 // src/pages/admin/ManagePayments.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { format } from "date-fns";
 
 const ManagePayments = () => {
   const [payments, setPayments] = useState([]);
@@ -10,30 +10,18 @@ const ManagePayments = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        // Backend not connected yet, so we’ll use dummy data
-        // Uncomment this line later when backend is ready:
-        // const response = await axios.get("http://localhost:5000/api/payments");
-        // setPayments(response.data);
-
-        // Temporary dummy data
-        setPayments([
-          {
-            payment_id: 1,
-            order_id: 101,
-            payment_method: "COD",
-            payment_status: "completed",
-            transaction_reference: "N/A",
-            created_at: new Date(),
+        const admin = JSON.parse(localStorage.getItem("user"));
+        const token = admin?.token;
+        const res = await fetch("http://localhost:5020/api/payments/getAllPayments", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
-          {
-            payment_id: 2,
-            order_id: 102,
-            payment_method: "Stripe",
-            payment_status: "pending",
-            transaction_reference: "TXN-3453",
-            created_at: new Date(),
-          },
-        ]);
+        });
+        if (!res.ok) throw new Error("Failed to fetch products");
+        const data = await res.json();
+        setPayments(data);
       } catch (error) {
         console.error("Error fetching payments:", error);
       } finally {
@@ -79,7 +67,6 @@ const ManagePayments = () => {
                 <th className="border p-3 text-left">Status</th>
                 <th className="border p-3 text-left">Transaction Ref</th>
                 <th className="border p-3 text-left">Date</th>
-                <th className="border p-3 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -91,11 +78,10 @@ const ManagePayments = () => {
                     <td className="border p-3">{payment.payment_method}</td>
                     <td className="border p-3">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs ${
-                          payment.payment_status === "completed"
+                        className={`px-2 py-1 rounded-full text-xs ${payment.payment_status === "completed"
                             ? "bg-green-100 text-green-700"
                             : "bg-yellow-100 text-yellow-700"
-                        }`}
+                          }`}
                       >
                         {payment.payment_status}
                       </span>
@@ -104,16 +90,16 @@ const ManagePayments = () => {
                       {payment.transaction_reference || "—"}
                     </td>
                     <td className="border p-3">
-                      {new Date(payment.created_at).toLocaleDateString()}
+                      {format(payment.payment_date, "dd MMM yyyy")}
                     </td>
-                    <td className="border p-3">
+                    {/* <td className="border p-3">
                       <button
                         onClick={() => alert("View details coming soon")}
                         className="bg-[#9C27B0] text-white px-4 py-1 rounded-lg hover:bg-[#7B1FA2] transition"
                       >
                         View
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               ) : (

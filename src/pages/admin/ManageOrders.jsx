@@ -1,122 +1,112 @@
 // src/pages/ManageOrders.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
 
 const ManageOrders = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null);
-  const [orders, setOrders] = useState([
-    {
-      id: "2012323467",
-      customer: "Muhammad Fateh",
-      service: "Domain Service",
-      date: "01/03/2024",
-      amount: "$1200.00",
-      payment: "Paid By Mastercard",
-      status: "Active",
-    },
-    {
-      id: "2012323500",
-      customer: "Anderson Jeck",
-      service: "Hosting Service",
-      date: "05/03/2024",
-      amount: "$4200.00",
-      payment: "Paid By Visacard",
-      status: "Active",
-    },
-    {
-      id: "2012323777",
-      customer: "Km Shahriar",
-      service: "Company Email",
-      date: "10/03/2024",
-      amount: "$700.00",
-      payment: "Unpaid",
-      status: "Pending",
-    },
-    {
-      id: "2012323998",
-      customer: "Saleh Madani",
-      service: "Domain Service",
-      date: "12/03/2024",
-      amount: "$300.00",
-      payment: "Paid By Madacard",
-      status: "Pending",
-    },
-    {
-      id: "2012323193",
-      customer: "Mustafa Sahan",
-      service: "Domain Service",
-      date: "15/03/2024",
-      amount: "$700.00",
-      payment: "Paid By Mastercard",
-      status: "Cancelled",
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
 
   const [formData, setFormData] = useState({
-    id: "",
-    customer: "",
-    service: "",
-    date: "",
-    amount: "",
-    payment: "",
+    // id: "",
+    // customer: "",
+    // date: "",
+    // amount: "",
+    // payment: "",
     status: "Pending",
   });
 
+  //Fetch products from backend
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const admin = JSON.parse(localStorage.getItem("user"));
+      const token = admin?.token;
+      const res = await fetch("http://localhost:5020/api/orders/viewAllOrders", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      });
+      if (!res.ok) throw new Error("Failed to fetch products");
+      const data = await res.json();
+      setOrders(data);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+    }
+  };
+
   const filteredOrders = orders
     .filter((order) => {
-      if (activeTab === "approved") return order.status === "Active";
-      if (activeTab === "pending") return order.status === "Pending";
-      if (activeTab === "cancelled") return order.status === "Cancelled";
+      const status = order.status.toLowerCase();
+      if (activeTab === "approved") return order.status === "approved";
+      if (activeTab === "pending") return order.status === "pending";
+      if (activeTab === "cancelled") return order.status === "cancelled";
       return true;
     })
     .filter(
       (order) =>
-        order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.id.toLowerCase().includes(searchTerm.toLowerCase())
+        order.user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.order_id.toString().includes(searchTerm.toLowerCase())
     );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleAddOrUpdateOrder = () => {
-    if (!formData.customer || !formData.service || !formData.amount) return;
+  const handleAddOrUpdateOrder = async (id) => {
+    // if (!formData.customer || !formData.amount) return;
 
-    if (editingOrder) {
-      setOrders(
-        orders.map((o) => (o.id === editingOrder.id ? { ...formData } : o))
-      );
-    } else {
-      setOrders([
-        ...orders,
-        { ...formData, id: Date.now().toString(), amount: `$${formData.amount}` },
-      ]);
-    }
-
+    // if (editingOrder) {
+    //   setOrders(
+    //     orders.map((o) => (o.id === editingOrder.id ? { ...formData } : o))
+    //   );
+    // } else {
+    //   setOrders([
+    //     ...orders,
+    //     { ...formData, id: Date.now().toString(), amount: `$${formData.amount}` },
+    //   ]);
+    // }
+    const admin = JSON.parse(localStorage.getItem("user"));
+    const token = admin?.token;
+    const res = await fetch(`http://localhost:5020/api/orders/${id}/status`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({status: formData.status.toLowerCase()})
+    });
+    if (!res.ok) throw new Error("Failed to update product");
+    setOrders(orders => orders.map(order => order.order_id === id ? {...order, status : formData.status.toLowerCase()} : order))
     setFormData({
-      id: "",
-      customer: "",
-      service: "",
-      date: "",
-      amount: "",
-      payment: "",
-      status: "Pending",
+      // id: "",
+      // customer: "",
+      // date: "",
+      // amount: "",
+      // payment: "",
+      status: "pending",
     });
     setEditingOrder(null);
     setShowForm(false);
+   
   };
 
   const handleEdit = (order) => {
-    setFormData({ ...order, amount: order.amount.replace("$", "") });
+    setFormData({ ...order });
     setEditingOrder(order);
     setShowForm(true);
   };
 
-  const handleDelete = (id) => {
-    setOrders(orders.filter((o) => o.id !== id));
-  };
+  // const handleDelete = (id) => {
+  //   setOrders(orders.filter((o) => o.id !== id));
+  // };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -125,14 +115,13 @@ const ManageOrders = () => {
         <h1 className="text-2xl font-bold" style={{ color: "#9C27B0" }}>
           Manage Orders
         </h1>
-        <button
+        {/* <button
           onClick={() => {
             setShowForm(!showForm);
             setEditingOrder(null);
             setFormData({
               id: "",
               customer: "",
-              service: "",
               date: "",
               amount: "",
               payment: "",
@@ -143,7 +132,7 @@ const ManageOrders = () => {
           style={{ backgroundColor: "#9C27B0" }}
         >
           {showForm ? "Close Form" : "+ Add New Order"}
-        </button>
+        </button> */}
       </div>
 
       {/* Tabs Section */}
@@ -157,11 +146,10 @@ const ManageOrders = () => {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`font-semibold text-black pb-2 ${
-              activeTab === tab.key
-                ? "border-b-2 border-[#9C27B0]"
-                : "hover:text-[#9C27B0]"
-            }`}
+            className={`font-semibold text-black pb-2 ${activeTab === tab.key
+              ? "border-b-2 border-[#9C27B0]"
+              : "hover:text-[#9C27B0]"
+              }`}
           >
             {tab.label}
           </button>
@@ -187,20 +175,12 @@ const ManageOrders = () => {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input
+            {/* <input
               type="text"
               name="customer"
               value={formData.customer}
               onChange={handleChange}
               placeholder="Customer Name"
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
-            />
-            <input
-              type="text"
-              name="service"
-              value={formData.service}
-              onChange={handleChange}
-              placeholder="Service Name or Equipment Name"
               className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
             />
             <input
@@ -225,7 +205,7 @@ const ManageOrders = () => {
               onChange={handleChange}
               placeholder="Payment Status"
               className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
-            />
+            /> */}
             <select
               name="status"
               value={formData.status}
@@ -233,14 +213,14 @@ const ManageOrders = () => {
               className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
             >
               <option>Pending</option>
-              <option>Active</option>
+              <option>Approved</option>
               <option>Cancelled</option>
             </select>
           </div>
 
           <div className="flex justify-end mt-4">
             <button
-              onClick={handleAddOrUpdateOrder}
+              onClick={() => handleAddOrUpdateOrder(formData.order_id)}
               className="text-white px-6 py-2 rounded-lg"
               style={{ backgroundColor: "#9C27B0" }}
             >
@@ -257,7 +237,6 @@ const ManageOrders = () => {
             <tr>
               <th className="border border-gray-200 p-3 text-left">Order ID</th>
               <th className="border border-gray-200 p-3 text-left">Customer Name</th>
-              <th className="border border-gray-200 p-3 text-left">Service</th>
               <th className="border border-gray-200 p-3 text-left">Date</th>
               <th className="border border-gray-200 p-3 text-left">Amount</th>
               <th className="border border-gray-200 p-3 text-left">Payment</th>
@@ -269,21 +248,19 @@ const ManageOrders = () => {
             {filteredOrders.length > 0 ? (
               filteredOrders.map((order, index) => (
                 <tr key={index} className="hover:bg-gray-50 transition">
-                  <td className="border border-gray-200 p-3">{order.id}</td>
-                  <td className="border border-gray-200 p-3">{order.customer}</td>
-                  <td className="border border-gray-200 p-3">{order.service}</td>
-                  <td className="border border-gray-200 p-3">{order.date}</td>
-                  <td className="border border-gray-200 p-3">{order.amount}</td>
-                  <td className="border border-gray-200 p-3">{order.payment}</td>
+                  <td className="border border-gray-200 p-3">{order.order_id}</td>
+                  <td className="border border-gray-200 p-3">{order.user.full_name}</td>
+                  <td className="border border-gray-200 p-3">{format(order.created_at, "dd MMM yyyy")}</td>
+                  <td className="border border-gray-200 p-3">{order.total_amount}</td>
+                  <td className="border border-gray-200 p-3">{order.payment.payment_method}</td>
                   <td className="border border-gray-200 p-3">
                     <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        order.status === "Active"
-                          ? "bg-green-100 text-green-700"
-                          : order.status === "Pending"
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${order.status === "approved"
+                        ? "bg-green-100 text-green-700"
+                        : order.status === "pending"
                           ? "bg-yellow-100 text-yellow-700"
                           : "bg-red-100 text-red-700"
-                      }`}
+                        }`}
                     >
                       {order.status}
                     </span>
@@ -295,12 +272,12 @@ const ManageOrders = () => {
                     >
                       Edit
                     </button>
-                    <button
-                      onClick={() => handleDelete(order.id)}
+                    {/* <button
+                      onClick={() => handleDelete(order.order_id)}
                       className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))

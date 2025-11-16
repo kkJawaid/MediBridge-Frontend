@@ -36,25 +36,25 @@ export default function AdminPanel() {
   //   approvedOrders: 1480,
   // });
 
-  // const salesData = [
-  //   { month: "Jan", current: 30, last: 20 },
-  //   { month: "Feb", current: 50, last: 40 },
-  //   { month: "Mar", current: 70, last: 60 },
-  //   { month: "Apr", current: 90, last: 80 },
-  //   { month: "May", current: 60, last: 70 },
-  //   { month: "Jun", current: 80, last: 60 },
-  //   { month: "Jul", current: 100, last: 70 },
-  // ];
+  const salesData = [
+    { month: "Jan", current: 30, last: 20 },
+    { month: "Feb", current: 50, last: 40 },
+    { month: "Mar", current: 70, last: 60 },
+    { month: "Apr", current: 90, last: 80 },
+    { month: "May", current: 60, last: 70 },
+    { month: "Jun", current: 80, last: 60 },
+    { month: "Jul", current: 100, last: 70 },
+  ];
 
-  // const productViews = [
-  //   { day: "Mon", thisWeek: 4000, lastWeek: 2400 },
-  //   { day: "Tue", thisWeek: 3000, lastWeek: 1398 },
-  //   { day: "Wed", thisWeek: 2000, lastWeek: 9800 },
-  //   { day: "Thu", thisWeek: 2780, lastWeek: 3908 },
-  //   { day: "Fri", thisWeek: 1890, lastWeek: 4800 },
-  //   { day: "Sat", thisWeek: 2390, lastWeek: 3800 },
-  //   { day: "Sun", thisWeek: 3490, lastWeek: 4300 },
-  // ];
+  const productViews = [
+    { day: "Mon", thisWeek: 4000, lastWeek: 2400 },
+    { day: "Tue", thisWeek: 3000, lastWeek: 1398 },
+    { day: "Wed", thisWeek: 2000, lastWeek: 9800 },
+    { day: "Thu", thisWeek: 2780, lastWeek: 3908 },
+    { day: "Fri", thisWeek: 1890, lastWeek: 4800 },
+    { day: "Sat", thisWeek: 2390, lastWeek: 3800 },
+    { day: "Sun", thisWeek: 3490, lastWeek: 4300 },
+  ];
 
   const [analytics, setAnalytics] = useState(null);
 
@@ -172,7 +172,7 @@ export default function AdminPanel() {
             <div className="grid grid-cols-2 gap-6 mb-8">
               <div className="bg-white p-6 rounded-2xl shadow-md h-[400px]">
                 <h3 className="font-semibold mb-4">Sales Trend</h3>
-                {/* <ResponsiveContainer width="100%" height="90%">
+                <ResponsiveContainer width="100%" height="90%">
                   <LineChart data={salesData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
@@ -192,12 +192,12 @@ export default function AdminPanel() {
                       strokeWidth={3}
                     />
                   </LineChart>
-                </ResponsiveContainer> */}
+                </ResponsiveContainer>
               </div>
 
               <div className="bg-white p-6 rounded-2xl shadow-md h-[400px]">
                 <h3 className="font-semibold mb-4">Product Views</h3>
-                {/* <ResponsiveContainer width="100%" height="90%">
+                <ResponsiveContainer width="100%" height="90%">
                   <BarChart data={productViews}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="day" />
@@ -207,7 +207,7 @@ export default function AdminPanel() {
                     <Bar dataKey="thisWeek" fill="#9C27B0" radius={[6, 6, 0, 0]} />
                     <Bar dataKey="lastWeek" fill="#f43f5e" radius={[6, 6, 0, 0]} />
                   </BarChart>
-                </ResponsiveContainer> */}
+                </ResponsiveContainer>
               </div>
             </div>
           </>

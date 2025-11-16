@@ -4,8 +4,66 @@ import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { toast } from "react-hot-toast";
 
 const Checkout = () => {
+  const [showSuccess, setShowSuccess] = useState(false);
+  //message to user when item added
+  const showToast = (msg) =>
+    toast.success(msg, {
+      duration: 2000,
+      position: "top-center",
+      style: {
+        border: "1px solid #A36DBD",
+        background: "#fff",
+        color: "#4B2A63",
+        fontWeight: 500,
+        fontSize: "14px",
+        padding: "12px 18px",
+        borderRadius: "10px",
+      },
+    });
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  async function redirectToStripe() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const id = Number(user?.user_id);
+    const res = await fetch("http://localhost:5020/api/create-payment-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: Number(getTotalPrice()),
+        currency: "usd",
+        userId: id
+      }),
+    });
+    const { clientSecret } = await res.json();
+    console.log("client secret: ", clientSecret);
+    // 2. Confirm card payment
+    const result = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+      },
+    });
+
+    // 3. Handle result
+    if (result.error) {
+      console.log("Payment failed:", result.error.message);
+      showToast(`Payment failed`);
+    }
+    else if (result.paymentIntent.status === "succeeded") {
+      console.log("Payment succeeded!");
+      showToast(`Payment Successful!`);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    }
+  };
+
+
   const { cartItems, getTotalPrice } = useCart();
   const navigate = useNavigate();
 
@@ -198,7 +256,7 @@ const Checkout = () => {
             </div>
           </div>
 
-          <h2 className="text-xl font-semibold text-[#0f766e] mb-4">Payment Method</h2>
+          {/* <h2 className="text-xl font-semibold text-[#0f766e] mb-4">Payment Method</h2>
           <div className="flex gap-4 mb-4">
             <label className="flex items-center gap-2">
               <input
@@ -270,9 +328,9 @@ const Checkout = () => {
 
               </div>
             </div>
-          )}
+          )} */}
 
-         {paymentMethod === "upi" && (
+          {/* {paymentMethod === "upi" && (
           <div className="mb-4">
             <input
               type="text"
@@ -282,11 +340,15 @@ const Checkout = () => {
               required
             />
           </div>
-        )}
-
+        )} */}
+          <CardElement></CardElement>
           <button
             type="submit"
             className="bg-teal-600 text-white mt-6 py-3 px-6 rounded-xl hover:bg-teal-700 active:bg-teal-800 transition-all w-full shadow-md focus:outline-none focus:ring-2 focus:ring-teal-400"
+            onClick={() => {
+              const ok = window.confirm("Are you sure you want to proceed with the payment?");
+              if (ok) redirectToStripe();
+            }}
           >
             Confirm & Pay
           </button>
