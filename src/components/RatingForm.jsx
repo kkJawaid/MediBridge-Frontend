@@ -36,7 +36,7 @@ export default function RatingForm({ onSubmit, onClose }) {
         ✕
       </button>
       <textarea
-        placeholder="Write your review..."
+        placeholder="Write here..."
         className="w-full p-3 border border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A36DBD] text-[#A36DBD] placeholder-purple-300"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
@@ -58,7 +58,7 @@ export default function RatingForm({ onSubmit, onClose }) {
         type="submit"
         className="w-full bg-[#A36DBD] text-white px-6 py-3 rounded-xl hover:bg-[#9258ad] active:bg-[#7d4699] transition-all shadow-md"
       >
-        Submit Review
+        Submit
       </button>
     </form>
   );

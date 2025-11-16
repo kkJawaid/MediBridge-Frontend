@@ -21,6 +21,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Product from "./pages/Product";
 import Bookmark from "./pages/Bookmark";
 import Review from "./pages/Review";
+import Complaint from "./pages/Complaint";
 
 import { Toaster } from "react-hot-toast";
 const App = () => {
@@ -36,8 +37,8 @@ const App = () => {
             <Route path="bookmarks" element={<Bookmark /> } />
             <Route path="reviews" element={<Review /> } />
             {/* <Route path="/details" element={<Details /> } />
-            <Route path="/orders" element={<Orders /> } />
-            <Route path="/complaints" element={<Complaints /> } /> */}
+            <Route path="/orders" element={<Orders /> } /> */}
+            <Route path="complaints" element={<Complaint /> } />
           </Route>
           <Route path="/services" element={<Services />} />
           <Route path="/equipment" element={<Equipment />} />
