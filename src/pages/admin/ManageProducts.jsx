@@ -18,15 +18,17 @@ const ManageProducts = () => {
     is_available: true,
   });
 
-  // ✅ Fetch products from backend
+  //Fetch products from backend
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
     try {
-      // const res = await axios.get("/api/products");
-      // setProducts(res.data);
+      const res = await fetch("http://localhost:5020/api/products/");
+      if (!res.ok) throw new Error("Failed to fetch products");
+      const data = await res.json();
+      setProducts(data);
     } catch (err) {
       // console.error("Error fetching products:", err);
     }
@@ -41,14 +43,30 @@ const ManageProducts = () => {
     });
   };
 
-  // ✅ Add or Update product
+  // Add or Update product
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (editingProduct) {
-        //await axios.put(`/api/products/${editingProduct.product_id}`, formData);
+        const admin = JSON.parse(localStorage.getItem("user"));
+        const token = admin?.token; 
+        const res = await fetch(`http://localhost:5020/api/products/${editingProduct.product_id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" ,
+          "Authorization": `Bearer ${token}`},
+          body: JSON.stringify(formData)
+        });
+        if (!res.ok) throw new Error("Failed to update product");
       } else {
-        //await axios.post("/api/products", formData);
+        const admin = JSON.parse(localStorage.getItem("user"));
+        const token = admin?.token; 
+        const res = await fetch("http://localhost:5020/api/products/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" ,
+          "Authorization": `Bearer ${token}`},
+          body: JSON.stringify(formData)
+        });
+        if (!res.ok) throw new Error("Failed to create product");
       }
       setShowForm(false);
       setEditingProduct(null);
@@ -75,11 +93,19 @@ const ManageProducts = () => {
     setShowForm(true);
   };
 
-  // ✅ Delete product
-  const handleDelete = async (id) => {
+  // Delete product
+  const handleDelete = async (product_id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        //await axios.delete(`/api/products/${id}`);
+        const admin = JSON.parse(localStorage.getItem("user"));
+        const token = admin?.token; 
+        const res = await fetch(`http://localhost:5020/api/products/${product_id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" ,
+          "Authorization": `Bearer ${token}`},
+        });
+        
+        if (!res.ok) throw new Error("Failed to delete product");
         fetchProducts();
       } catch (err) {
         console.error("Error deleting product:", err);
@@ -87,7 +113,7 @@ const ManageProducts = () => {
     }
   };
 
-  // ✅ Filter products by search
+  // Filter products by search
   const filteredProducts = products.filter(
     (p) =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
