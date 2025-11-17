@@ -59,6 +59,9 @@ const Product = () => {
 
     async function handleAddToCart(item) {
         const response = await addToCart(product);
+        if (response === undefined) {
+            return;
+        }
         if (response == "already in cart!") {
             showToast(`${product.name} is already in your cart!`);
         } else {
@@ -68,6 +71,11 @@ const Product = () => {
 
     async function handleBookmark(item) {
         const response = await addBookmark(product);
+        const message = typeof response === "string" ? response : response?.message;
+        if (message === "Invalid token") {
+            showToast("You must be logged in first.");
+            return;
+        }
         if (response == "Bookmark already present.") {
             showToast(`${product.name} is already in your Bookmarks!`);
         } else {
@@ -78,6 +86,10 @@ const Product = () => {
     const submitReview = async (comment) => {
         const user = JSON.parse(localStorage.getItem("user"));
         const token = user?.token;
+        if (token === undefined) {
+            showToast("You must be logged in first.");
+            return;
+        }
         const res = await fetch(`http://localhost:5020/api/reviews/${id}`, {
             method: "POST",
             headers: {
@@ -150,7 +162,7 @@ const Product = () => {
             {
                 showForm &&
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <RatingForm onSubmit={submitReview} onClose={() =>  setShowForm(false)} />
+                    <RatingForm onSubmit={submitReview} onClose={() => setShowForm(false)} />
                 </div>
             }
             {/* for reviews */}
