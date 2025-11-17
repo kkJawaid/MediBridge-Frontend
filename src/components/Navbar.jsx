@@ -66,7 +66,7 @@ export default function Navbar() {
               to="/register"
               className="text-sm font-medium text-gray-600 hover:text-gray-800"
             >
-              Register
+              Registration and Login
             </Link>
           )}
           <div className="relative cursor-pointer">

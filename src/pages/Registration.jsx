@@ -6,8 +6,8 @@ import bgImage from "../assets/proj.png";
 import { nav } from "framer-motion/client";
 
 export default function Registration() {
-  const brand = "#B896C3"; 
-  const vibrantLavender = "#A36DBD"; 
+  const brand = "#B896C3";
+  const vibrantLavender = "#A36DBD";
 
   const [isLogin, setIsLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +22,7 @@ export default function Registration() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -48,7 +48,7 @@ export default function Registration() {
   //         //   "user",
   //         //   JSON.stringify({ role: "admin", name: "Admin" })
   //         // );
-          
+
   //         //connecting to backend
   //         const res = await fetch("http://localhost:5020/api/auth/register", {
   //           method: "POST",
@@ -97,7 +97,7 @@ export default function Registration() {
   //       //     name: `${formData.firstName} ${formData.lastName}`,
   //       //   })
   //       // );
-        
+
   //     }
 
   //     setIsSubmitting(false);
@@ -105,16 +105,36 @@ export default function Registration() {
   //     setTimeout(() => setSubmitSuccess(false), 2000);
   //   // }, 1500);
   // };
+  //validation logic
+  const validateForm = () => {
+    let newErrors = {};
 
+    if (!formData.email.trim()) newErrors.email = "Email required";
+    if (!formData.password.trim()) newErrors.password = "Password required";
+
+    if (!isLogin) {
+      if (!formData.fullName.trim()) newErrors.fullName = "Full name required";
+      if (!formData.confirmPassword.trim())
+        newErrors.confirmPassword = "Confirm password required";
+      if (formData.password !== formData.confirmPassword)
+        newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   //register logic
-  const handleRegister = async(e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setIsSubmitting(true);
+    setSubmitSuccess(false);
+    setErrors({}); // clear previous errors
 
     try {
       const res = await fetch("http://localhost:5020/api/auth/register", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: formData.fullName,
           email: formData.email,
@@ -123,26 +143,35 @@ export default function Registration() {
       });
 
       const data = await res.json();
-      if(res.ok) {
+      if (res.ok) {
         setSubmitSuccess(true);
         setIsSubmitting(false);
         //redirection to login page after registration
         // navigate("/login");
-        setIsLogin(true); // switch to login form
+        setTimeout(() => {
+          setIsLogin(true);     // switch to login form
+          setSubmitSuccess(false);
+        }, 1200);          // adjust delay
       } else {
-        console.log("error: ", data.message); //need to say user already registerd
-      } 
-    } catch(err) {
-        console.error("error: ", err);
+        setErrors({ form: data.message || "Registration failed" });
         setIsSubmitting(false);
+        console.log("error: ", data.message); //need to say user already registerd
       }
+    } catch (err) {
+      console.error("error: ", err);
+      setErrors({ form: "Network error" });
+      setIsSubmitting(false);
     }
+  }
 
-    //login logic
+  //login logic
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setIsSubmitting(true);
-
+    setSubmitSuccess(false);
+    setErrors({}); // clear previous errors
+    
     try {
       const res = await fetch("http://localhost:5020/api/auth/login", {
         method: "POST",
@@ -168,13 +197,14 @@ export default function Registration() {
         setIsSubmitting(false);
       } else {
         console.error("Login failed:", data.message);
+        setErrors({ form: data.message || "Login failed" });
         setIsSubmitting(false);
       }
     } catch (err) {
       console.error("Login error:", err);
       setIsSubmitting(false);
     }
-};
+  };
 
   return (
     <div
@@ -227,6 +257,7 @@ export default function Registration() {
                     onChange={handleChange}
                     className="w-full px-3 py-2 border rounded-lg focus:ring-purple-500 focus:border-purple-500"
                   />
+                  {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName}</p>}
                 </div>
               </>
             )}
@@ -242,6 +273,7 @@ export default function Registration() {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded-lg focus:ring-purple-500 focus:border-purple-500"
               />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
 
             <div>
@@ -256,6 +288,7 @@ export default function Registration() {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-lg focus:ring-purple-500 focus:border-purple-500"
                 />
+                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                 <span
                   className="absolute right-3 top-2 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
@@ -278,6 +311,7 @@ export default function Registration() {
                     onChange={handleChange}
                     className="w-full px-3 py-2 border rounded-lg focus:ring-purple-500 focus:border-purple-500"
                   />
+                  {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
                   <span
                     className="absolute right-3 top-2 cursor-pointer"
                     onClick={() =>
@@ -289,7 +323,11 @@ export default function Registration() {
                 </div>
               </div>
             )}
-
+            {errors.form && (
+              <div className="text-red-600 text-center text-sm mb-2">
+                {errors.form}
+              </div>
+            )}
             <button
               type="submit"
               disabled={isSubmitting}
