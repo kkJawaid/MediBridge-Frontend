@@ -1,15 +1,16 @@
 import React from "react";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const headingColor = "#7B1FA2"; // richer purple
   const textColor = "#5E3B76"; // medium lavender
   const iconBgHover = "#9C27B0"; // vibrant purple for hover
-  
+
   return (
     <footer className="bg-white text-gray-700 pt-16 pb-8 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-10">
-        
+
         {/* Brand */}
         <div>
           <h2 className="text-2xl font-bold mb-4" style={{ color: headingColor }}>
@@ -27,10 +28,10 @@ const Footer = () => {
             Quick Links
           </h3>
           <ul className="space-y-2 text-sm" style={{ color: textColor }}>
-            <li><a href="#home" className="hover:text-[#9C27B0] transition">Home</a></li>
-            <li><a href="#services" className="hover:text-[#9C27B0] transition">Services</a></li>
-            <li><a href="#equipment" className="hover:text-[#9C27B0] transition">Equipment</a></li>
-            <li><a href="#about" className="hover:text-[#9C27B0] transition">About Us</a></li>
+            <li><Link to="/" className="hover:text-[#9C27B0] transition">Home</Link></li>
+            <li><Link to="/services" className="hover:text-[#9C27B0] transition">Services</Link></li>
+            <li><Link to="/equipment" className="hover:text-[#9C27B0] transition">Equipment</Link></li>
+            <li><Link to="/about" className="hover:text-[#9C27B0] transition">About Us</Link></li>
           </ul>
         </div>
 
@@ -53,13 +54,13 @@ const Footer = () => {
           </h3>
           <div className="flex gap-4">
             {[Facebook, Instagram, Twitter].map((Icon, index) => (
-              <a
+              <button
                 key={index}
-                href="#"
+                onClick={() => alert("Social Media Platforms coming soon")}
                 className="bg-white rounded-full p-3 shadow-md hover:bg-[#9C27B0] hover:text-white transition"
               >
                 <Icon size={18} color={headingColor} />
-              </a>
+              </button>
             ))}
           </div>
         </div>
