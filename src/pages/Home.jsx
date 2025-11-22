@@ -50,34 +50,6 @@ export default function Home() {
               medical equipment, and get care delivered to your doorstep — all
               in one place.
             </p>
-            {/* STATS */}
-            <div className="mt-8 flex flex-wrap items-center gap-4 text-sm">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center font-bold"
-                  style={{
-                    backgroundColor: "#F3E8F9",
-                    color: vibrantLavender,
-                  }}
-                >
-                  20+
-                </div>
-                <div style={{ color: "#6B4A78" }}>Medical Specialists</div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center font-bold"
-                  style={{
-                    backgroundColor: "#F3E8F9",
-                    color: vibrantLavender,
-                  }}
-                >
-                  10k+
-                </div>
-                <div style={{ color: "#6B4A78" }}>Happy Patients</div>
-              </div>
-            </div>
           </div>
 
           <div className="flex justify-center">
