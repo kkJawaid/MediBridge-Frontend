@@ -22,7 +22,7 @@ const ManageOrders = () => {
     try {
       const admin = JSON.parse(localStorage.getItem("user"));
       const token = admin?.token;
-      const res = await fetch("http://localhost:5020/api/orders/viewAllOrders", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/viewAllOrders`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const ManageOrders = () => {
   const handleAddOrUpdateOrder = async (id) => {
     const admin = JSON.parse(localStorage.getItem("user"));
     const token = admin?.token;
-    const res = await fetch(`http://localhost:5020/api/orders/${id}/status`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/status`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

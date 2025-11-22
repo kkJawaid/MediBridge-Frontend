@@ -29,7 +29,7 @@ const Checkout = () => {
   async function redirectToStripe() {
     const user = JSON.parse(localStorage.getItem("user"));
     const id = Number(user?.user_id);
-    const res = await fetch("http://localhost:5020/api/create-payment-intent", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/create-payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

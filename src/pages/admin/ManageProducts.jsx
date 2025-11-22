@@ -24,7 +24,7 @@ const ManageProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5020/api/products/");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
       if (!res.ok) throw new Error("Failed to fetch products");
       const data = await res.json();
       setProducts(data);
@@ -49,7 +49,7 @@ const ManageProducts = () => {
       if (editingProduct) {
         const admin = JSON.parse(localStorage.getItem("user"));
         const token = admin?.token; 
-        const res = await fetch(`http://localhost:5020/api/products/${editingProduct.product_id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${editingProduct.product_id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" ,
           "Authorization": `Bearer ${token}`},
@@ -59,7 +59,7 @@ const ManageProducts = () => {
       } else {
         const admin = JSON.parse(localStorage.getItem("user"));
         const token = admin?.token; 
-        const res = await fetch("http://localhost:5020/api/products/", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`, {
           method: "POST",
           headers: { "Content-Type": "application/json" ,
           "Authorization": `Bearer ${token}`},
@@ -98,7 +98,7 @@ const ManageProducts = () => {
       try {
         const admin = JSON.parse(localStorage.getItem("user"));
         const token = admin?.token; 
-        const res = await fetch(`http://localhost:5020/api/products/${product_id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${product_id}`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" ,
           "Authorization": `Bearer ${token}`},

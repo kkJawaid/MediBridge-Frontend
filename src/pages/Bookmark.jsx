@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export async function addBookmark(item) {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
-    const res = await fetch(`http://localhost:5020/api/products/${item.product_id}/bookmark/add`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${item.product_id}/bookmark/add`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -30,7 +30,7 @@ const Bookmark = () => {
         const getBookmarks = async () => {
             const user = JSON.parse(localStorage.getItem("user"));
             const token = user?.token;
-            const res = await fetch(`http://localhost:5020/api/profile/viewBookmarks`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/viewBookmarks`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const Bookmark = () => {
     async function removeBookmark(item) {
         const user = JSON.parse(localStorage.getItem("user"));
         const token = user?.token;
-        const res = await fetch(`http://localhost:5020/api/products/${item.product_id}/bookmark/remove`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${item.product_id}/bookmark/remove`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

@@ -35,14 +35,14 @@ export default function AdminPanel() {
       const user = JSON.parse(localStorage.getItem("user"));
       const token = user?.token;
 
-      const res = await fetch("http://localhost:5020/api/admin/analytics", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/analytics`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
 
-      const chartRes = await fetch("http://localhost:5020/api/admin/analytics/charts", {
+      const chartRes = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/analytics/charts`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

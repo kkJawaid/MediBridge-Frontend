@@ -29,7 +29,7 @@ export const CartProvider = ({ children }) => {
       showToast("You must be logged in first.");
       return;
     }
-    const res = await fetch(`http://localhost:5020/api/cart/${item.product_id}/addToCart`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${item.product_id}/addToCart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (id, type) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
-    const res = await fetch(`http://localhost:5020/api/cart/${id}/deleteItem`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${id}/deleteItem`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export const CartProvider = ({ children }) => {
   const increaseQuantity = async (id, type) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
-    const res = await fetch(`http://localhost:5020/api/cart/${id}/increaseQuant`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${id}/increaseQuant`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export const CartProvider = ({ children }) => {
   const decreaseQuantity = async (id, type) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
-    const res = await fetch(`http://localhost:5020/api/cart/${id}/decreaseQuant`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${id}/decreaseQuant`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

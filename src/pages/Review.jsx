@@ -8,7 +8,7 @@ const Review = () => {
         const getReviews = async () => {
             const user = JSON.parse(localStorage.getItem("user"));
             const token = user?.token;
-            const res = await fetch(`http://localhost:5020/api/reviews/getReview`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/getReview`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -25,7 +25,7 @@ const Review = () => {
     async function removeReview(item) {
         const user = JSON.parse(localStorage.getItem("user"));
         const token = user?.token;
-        const res = await fetch(`http://localhost:5020/api/reviews/deleteReview`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/deleteReview`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

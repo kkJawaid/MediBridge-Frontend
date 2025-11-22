@@ -23,7 +23,7 @@ const Cart = () => {
         const user = JSON.parse(localStorage.getItem("user"));
         const token = user?.token;
 
-        const res = await fetch("http://localhost:5020/api/cart/viewCart", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/viewCart`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

@@ -33,7 +33,7 @@ const Product = () => {
     useEffect(() => {
         async function fetchProduct() {
             try {
-                const res = await fetch(`http://localhost:5020/api/products/${id}`);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
                 const data = await res.json();
                 setProduct(data);
             } catch (err) {
@@ -42,7 +42,7 @@ const Product = () => {
         }
         async function fetchReviews() {
             try {
-                const res = await fetch(`http://localhost:5020/api/reviews/product/${id}`);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/product/${id}`);
                 const data = await res.json();
                 setReview(data);
             } catch (err) {
@@ -88,7 +88,7 @@ const Product = () => {
             showToast("You must be logged in first.");
             return;
         }
-        const res = await fetch(`http://localhost:5020/api/reviews/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -11,7 +11,7 @@ const ManagePayments = () => {
       try {
         const admin = JSON.parse(localStorage.getItem("user"));
         const token = admin?.token;
-        const res = await fetch("http://localhost:5020/api/payments/getAllPayments", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/getAllPayments`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

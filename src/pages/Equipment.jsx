@@ -24,7 +24,7 @@ const Equipment = () => {
   useEffect(() => {
     const fetchEquipment = async () => {
       try {
-        const res = await fetch("http://localhost:5020/api/products/");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
         const data = await res.json();
         const typeFilter = activeTab == "buy" ? "equipment-buy" : "equipment-rent";
         const mappedData = data.filter(item => item.type === typeFilter).map(item => ({

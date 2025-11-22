@@ -20,7 +20,7 @@ const Services = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await fetch("http://localhost:5020/api/products/");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
         const data = await res.json();
         const mappedData = data.filter(item => item.type === "service").map(item => ({
           id: item.product_id,
