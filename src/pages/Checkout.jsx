@@ -35,7 +35,9 @@ const Checkout = () => {
       body: JSON.stringify({
         amount: Number(getTotalPrice()),
         currency: "usd",
-        userId: id
+        userId: id,
+        contact: deliveryInfo.phone,
+        address: deliveryInfo.address
       }),
     });
     const { clientSecret } = await res.json();
@@ -75,7 +77,6 @@ const Checkout = () => {
     email: "",
     phone: "",
     address: "",
-    city: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -108,7 +109,6 @@ const Checkout = () => {
     if (!/^\d{10}$/.test(deliveryInfo.phone))
       newErrors.phone = "Phone must be 10 digits";
     if (!deliveryInfo.address.trim()) newErrors.address = "Address required";
-    if (!deliveryInfo.city.trim()) newErrors.city = "City required";
     // Card validations if card selected
     if (paymentMethod === "card") {
       if (!cardInfo.name.trim()) newErrors.cardName = "Cardholder name required";
@@ -203,19 +203,6 @@ const Checkout = () => {
                 onChange={handleDeliveryChange}
                 className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-teal-200"
               />
-              {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-            </div>
-
-            <div>
-              <input
-                type="text"
-                name="city"
-                placeholder="City"
-                value={deliveryInfo.city}
-                onChange={handleDeliveryChange}
-                className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-teal-200"
-              />
-              {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
             </div>
 
             <div className="md:col-span-2">

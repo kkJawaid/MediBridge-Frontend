@@ -40,7 +40,8 @@ const ManageOrders = () => {
   const filteredOrders = orders
     .filter((order) => {
       const status = order.status.toLowerCase();
-      if (activeTab === "approved") return order.status === "approved";
+      if (activeTab === "completed") return order.status === "completed";
+      if (activeTab === "dispatched") return order.status === "dispatched";
       if (activeTab === "pending") return order.status === "pending";
       if (activeTab === "cancelled") return order.status === "cancelled";
       return true;
@@ -94,8 +95,9 @@ const ManageOrders = () => {
       <div className="flex gap-6 mb-4 border-b pb-2">
         {[
           { key: "all", label: "All Orders" },
-          { key: "approved", label: "Approved Orders" },
+          { key: "completed", label: "Completed Orders" },
           { key: "pending", label: "Pending Orders" },
+          { key: "dispatched", label: "Dispatched Orders" },
           { key: "cancelled", label: "Cancelled Orders" },
         ].map((tab) => (
           <button
@@ -137,7 +139,8 @@ const ManageOrders = () => {
               className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
             >
               <option>Pending</option>
-              <option>Approved</option>
+              <option>Completed</option>
+              <option>Dispatched</option>
               <option>Cancelled</option>
             </select>
           </div>
@@ -164,6 +167,8 @@ const ManageOrders = () => {
               <th className="border border-gray-200 p-3 text-left">Date</th>
               <th className="border border-gray-200 p-3 text-left">Amount</th>
               <th className="border border-gray-200 p-3 text-left">Payment</th>
+              <th className="border border-gray-200 p-3 text-left">Contact</th>
+              <th className="border border-gray-200 p-3 text-left">Address</th>
               <th className="border border-gray-200 p-3 text-left">Status</th>
               <th className="border border-gray-200 p-3 text-center">Actions</th>
             </tr>
@@ -177,11 +182,13 @@ const ManageOrders = () => {
                   <td className="border border-gray-200 p-3">{format(order.created_at, "dd MMM yyyy")}</td>
                   <td className="border border-gray-200 p-3">{order.total_amount}</td>
                   <td className="border border-gray-200 p-3">{order.payment.payment_method}</td>
+                  <td className="border border-gray-200 p-3">{order.contact}</td>
+                  <td className="border border-gray-200 p-3">{order.address}</td>
                   <td className="border border-gray-200 p-3">
                     <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${order.status === "approved"
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${order.status === "completed"
                         ? "bg-green-100 text-green-700"
-                        : order.status === "pending"
+                        : order.status === "pending"  || order.status === "dispatched"
                           ? "bg-yellow-100 text-yellow-700"
                           : "bg-red-100 text-red-700"
                         }`}

@@ -130,7 +130,7 @@ export default function AdminPanel() {
             {/* Stats */}
             <div className="grid grid-cols-4 gap-6 mb-8">
               <div className="p-6 rounded-2xl shadow-sm bg-purple-100 text-[#9C27B0]">
-                <h2 className="text-2xl font-bold">{analytics?.totalUsers}</h2>
+                <h2 className="text-2xl font-bold">{analytics?.totalUsers - 1}</h2>
                 <p className="text-sm">Total Customers</p>
               </div>
               <div className="p-6 rounded-2xl shadow-sm bg-yellow-100 text-yellow-600">
