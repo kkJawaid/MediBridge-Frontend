@@ -27,35 +27,6 @@ export default function AdminPanel() {
   const location = useLocation();
   const isDashboard = location.pathname === "/admin";
 
-  // Dummy data (same shape as backend)
-  // const [analytics] = useState({
-  //   totalOrders: 1600,
-  //   totalUsers: 2000,
-  //   totalProducts: 140,
-  //   cancelledOrders: 120,
-  //   approvedOrders: 1480,
-  // });
-
-  // const salesData = [
-  //   { month: "Jan", current: 30, last: 20 },
-  //   { month: "Feb", current: 50, last: 40 },
-  //   { month: "Mar", current: 70, last: 60 },
-  //   { month: "Apr", current: 90, last: 80 },
-  //   { month: "May", current: 60, last: 70 },
-  //   { month: "Jun", current: 80, last: 60 },
-  //   { month: "Jul", current: 100, last: 70 },
-  // ];
-
-  // const productViews = [
-  //   { day: "Mon", thisWeek: 4000, lastWeek: 2400 },
-  //   { day: "Tue", thisWeek: 3000, lastWeek: 1398 },
-  //   { day: "Wed", thisWeek: 2000, lastWeek: 9800 },
-  //   { day: "Thu", thisWeek: 2780, lastWeek: 3908 },
-  //   { day: "Fri", thisWeek: 1890, lastWeek: 4800 },
-  //   { day: "Sat", thisWeek: 2390, lastWeek: 3800 },
-  //   { day: "Sun", thisWeek: 3490, lastWeek: 4300 },
-  // ];
-
   const [analytics, setAnalytics] = useState(null);
   const [chartData, setChartData] = useState(null);
 
@@ -80,8 +51,6 @@ export default function AdminPanel() {
 
       const data = await res.json();
       const charts = await chartRes.json();
-      console.log(data);
-      console.log(charts);
       setAnalytics(data);
       setChartData(charts);
     }
@@ -111,7 +80,6 @@ export default function AdminPanel() {
           <nav className="mt-6 flex flex-col gap-1 px-4">
             {[
               { path: "/admin", label: "Dashboard", icon: <FaChartLine /> },
-              // { path: "/admin/manage-users", label: "Users", icon: <FaUser /> },
               { path: "/admin/manage-products", label: "Products", icon: <FaBox /> },
               { path: "/admin/manage-orders", label: "Orders", icon: <FaShoppingCart /> },
               { path: "/admin/manage-payments", label: "Payments", icon: <FaMoneyBill /> },
@@ -203,19 +171,7 @@ export default function AdminPanel() {
                       strokeWidth={3}
                       name="Orders"
                     />
-                    {/* <Line
-                      type="monotone"
-                      dataKey="last"
-                      stroke="#f43f5e"
-                      strokeWidth={3}
-                    /> */}
                   </LineChart>
-                  {/* <LineChart data={chartData?.monthlyOrders || []}>
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line dataKey="order_count" stroke="#f43f5e" strokeWidth={3} />
-                  </LineChart> */}
                 </ResponsiveContainer>
               </div>
 

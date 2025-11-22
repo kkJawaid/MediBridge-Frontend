@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import bgImage from "../assets/proj.png";
-import { nav } from "framer-motion/client";
 
 export default function Registration() {
   const brand = "#B896C3";
@@ -30,81 +29,6 @@ export default function Registration() {
     if (errors[name]) setErrors({ ...errors, [name]: "" });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setIsSubmitting(true);
-
-  //   // setTimeout(() => {
-  //     //console.log(isLogin ? "Login Data:" : "Register Data:", formData);
-
-  //     //Hardcoded Admin Credentials
-  //     const adminEmail = "admin@medibridge.com";
-  //     const adminPassword = "admin123";
-
-  //     if (!isLogin) {
-  //       if (formData.email === adminEmail && formData.password === adminPassword) {
-  //         // // Save admin details
-  //         // localStorage.setItem(
-  //         //   "user",
-  //         //   JSON.stringify({ role: "admin", name: "Admin" })
-  //         // );
-
-  //         //connecting to backend
-  //         const res = await fetch("http://localhost:5020/api/auth/register", {
-  //           method: "POST",
-  //           headers: {"Content-Type": "application/json"},
-  //           body: JSON.stringify ({
-  //             full_name: formData.fullName,
-  //             email: formData.email,
-  //             password: formData.password
-  //           }),
-  //         });
-
-  //         const data = await res.json();
-  //         if (res.ok) {
-  //           localStorage.setItem("user", JSON.stringify(data.user));
-  //           setSubmitSuccess(true);
-  //           setIsSubmitting(false);
-  //           setTimeout(() => navigate("/login"), 1000);
-  //         }
-
-  //         //Redirect to Admin Dashboard
-  //         setTimeout(() => navigate("/admin"), 1000);
-  //         return;
-  //       } else {
-  //         // //Normal user login
-  //         // localStorage.setItem(
-  //         //   "user",
-  //         //   JSON.stringify({
-  //         //     role: "user",
-  //         //     name: formData.firstName || "Customer",
-  //         //   })
-  //         // );
-
-  //         setSubmitSuccess(true);
-  //         setIsSubmitting(false);
-
-  //         //Redirect to Homepage
-  //         setTimeout(() => navigate("/"), 1000);
-  //         return;
-  //       }
-  //     } else {
-  //       //Registration — default as normal user
-  //       // localStorage.setItem(
-  //       //   "user",
-  //       //   JSON.stringify({
-  //       //     role: "user",
-  //       //     name: `${formData.firstName} ${formData.lastName}`,
-  //       //   })
-  //       // );
-
-  //     }
-
-  //     setIsSubmitting(false);
-  //     setSubmitSuccess(true);
-  //     setTimeout(() => setSubmitSuccess(false), 2000);
-  //   // }, 1500);
-  // };
   //validation logic
   const validateForm = () => {
     let newErrors = {};
@@ -141,13 +65,11 @@ export default function Registration() {
           password: formData.password,
         }),
       });
-
       const data = await res.json();
       if (res.ok) {
         setSubmitSuccess(true);
         setIsSubmitting(false);
         //redirection to login page after registration
-        // navigate("/login");
         setTimeout(() => {
           setIsLogin(true);     // switch to login form
           setSubmitSuccess(false);
@@ -155,7 +77,6 @@ export default function Registration() {
       } else {
         setErrors({ form: data.message || "Registration failed" });
         setIsSubmitting(false);
-        console.log("error: ", data.message); //need to say user already registerd
       }
     } catch (err) {
       console.error("error: ", err);
@@ -191,7 +112,6 @@ export default function Registration() {
           navigate("/admin");
         } else {
           localStorage.setItem("user", JSON.stringify({ role: "user", ...data.user, token: data.token }));
-          console.log(localStorage);
           navigate("/"); // normal home page
         }
         setIsSubmitting(false);
@@ -217,7 +137,6 @@ export default function Registration() {
     >
       <Navbar />
 
-      {/* Gradient overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
       {/* Form container */}

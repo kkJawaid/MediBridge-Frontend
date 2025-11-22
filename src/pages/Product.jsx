@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { CartProvider, useCart } from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { addBookmark } from "./Bookmark";
-//import { addReview } from "./RatingReview";
 import RatingForm from "../components/RatingForm";
 
 const Product = () => {
-    //message to user when item added
     const showToast = (msg) =>
         toast.success(msg, {
             duration: 2000,
@@ -146,7 +144,6 @@ const Product = () => {
                 </div>
             </div>
 
-            {/* for buttons */}
             <div className="flex flex-col gap-[10px] justify-center items-center mt-[50px]">
                 <button onClick={() => handleAddToCart(product)} className="w-[300px] py-2 rounded-xl font-medium text-white transition bg-[#B896C3] hover:bg-[#A36DBD]">
                     Add To Cart
@@ -165,7 +162,6 @@ const Product = () => {
                     <RatingForm onSubmit={submitReview} onClose={() => setShowForm(false)} />
                 </div>
             }
-            {/* for reviews */}
             <div className="w-full h-auto flex flex-col gap-[50px]">
                 <div className="w-1/2 h-auto flex flex-col gap-[30px] m-10">
                     <h1 className="font-semibold text-gray-900 text-3xl">Reviews: </h1>

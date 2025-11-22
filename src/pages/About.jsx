@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import myImage from "../assets/Medicine.jpeg";
@@ -15,7 +14,6 @@ const About = () => {
     <div className="text-gray-800 font-sans">
       <Navbar />
 
-      {/* About Section */}
       <section
         className="py-16"
         style={{
@@ -45,7 +43,6 @@ const About = () => {
             </p>
           </div>
 
-          {/* RIGHT SIDE HERO IMAGE */}
           <div className="flex items-center justify-center">
             <div
               className="w-full max-w-md h-80 rounded-3xl shadow-lg overflow-hidden flex items-center justify-center"
@@ -63,13 +60,9 @@ const About = () => {
         </div>
       </section>
 
-      {/* Mission / Vision / Core Values */}
       <section className="container mx-auto px-4 md:px-8 py-16">
         <div className="grid md:grid-cols-3 gap-8 text-center">
           <div className="bg-white shadow-md rounded-xl p-8 hover:shadow-xl transition">
-            {/* <div className="mb-4 text-3xl" style={{ color: iconColor }}>
-              🚀
-            </div> */}
             <h3 className="font-bold text-lg mb-3" style={{ color: headingColor }}>
               Mission
             </h3>
@@ -80,9 +73,6 @@ const About = () => {
           </div>
 
           <div className="bg-white shadow-md rounded-xl p-8 hover:shadow-xl transition">
-            {/* <div className="mb-4 text-3xl" style={{ color: iconColor }}>
-              🌟
-            </div> */}
             <h3 className="font-bold text-lg mb-3" style={{ color: headingColor }}>
               Vision
             </h3>
@@ -93,9 +83,6 @@ const About = () => {
           </div>
 
           <div className="bg-white shadow-md rounded-xl p-8 hover:shadow-xl transition">
-            {/* <div className="mb-4 text-3xl" style={{ color: iconColor }}>
-              💎
-            </div> */}
             <h3 className="font-bold text-lg mb-3" style={{ color: headingColor }}>
               Core Values
             </h3>
@@ -107,7 +94,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Our Story */}
       <section
         className="py-16"
         style={{

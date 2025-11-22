@@ -1,11 +1,9 @@
-import React from "react";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   const headingColor = "#7B1FA2"; // richer purple
   const textColor = "#5E3B76"; // medium lavender
-  const iconBgHover = "#9C27B0"; // vibrant purple for hover
 
   return (
     <footer className="bg-white text-gray-700 pt-16 pb-8 border-t border-gray-200">

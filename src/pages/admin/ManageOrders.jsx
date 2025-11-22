@@ -10,11 +10,6 @@ const ManageOrders = () => {
   const [orders, setOrders] = useState([]);
 
   const [formData, setFormData] = useState({
-    // id: "",
-    // customer: "",
-    // date: "",
-    // amount: "",
-    // payment: "",
     status: "Pending",
   });
 
@@ -61,18 +56,6 @@ const ManageOrders = () => {
   };
 
   const handleAddOrUpdateOrder = async (id) => {
-    // if (!formData.customer || !formData.amount) return;
-
-    // if (editingOrder) {
-    //   setOrders(
-    //     orders.map((o) => (o.id === editingOrder.id ? { ...formData } : o))
-    //   );
-    // } else {
-    //   setOrders([
-    //     ...orders,
-    //     { ...formData, id: Date.now().toString(), amount: `$${formData.amount}` },
-    //   ]);
-    // }
     const admin = JSON.parse(localStorage.getItem("user"));
     const token = admin?.token;
     const res = await fetch(`http://localhost:5020/api/orders/${id}/status`, {
@@ -86,11 +69,6 @@ const ManageOrders = () => {
     if (!res.ok) throw new Error("Failed to update product");
     setOrders(orders => orders.map(order => order.order_id === id ? {...order, status : formData.status.toLowerCase()} : order))
     setFormData({
-      // id: "",
-      // customer: "",
-      // date: "",
-      // amount: "",
-      // payment: "",
       status: "pending",
     });
     setEditingOrder(null);
@@ -103,11 +81,6 @@ const ManageOrders = () => {
     setEditingOrder(order);
     setShowForm(true);
   };
-
-  // const handleDelete = (id) => {
-  //   setOrders(orders.filter((o) => o.id !== id));
-  // };
-
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       {/* Header Section */}
@@ -115,24 +88,6 @@ const ManageOrders = () => {
         <h1 className="text-2xl font-bold" style={{ color: "#9C27B0" }}>
           Manage Orders
         </h1>
-        {/* <button
-          onClick={() => {
-            setShowForm(!showForm);
-            setEditingOrder(null);
-            setFormData({
-              id: "",
-              customer: "",
-              date: "",
-              amount: "",
-              payment: "",
-              status: "Pending",
-            });
-          }}
-          className="text-white px-4 py-2 rounded-lg"
-          style={{ backgroundColor: "#9C27B0" }}
-        >
-          {showForm ? "Close Form" : "+ Add New Order"}
-        </button> */}
       </div>
 
       {/* Tabs Section */}
@@ -175,37 +130,6 @@ const ManageOrders = () => {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* <input
-              type="text"
-              name="customer"
-              value={formData.customer}
-              onChange={handleChange}
-              placeholder="Customer Name"
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
-            />
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
-            />
-            <input
-              type="number"
-              name="amount"
-              value={formData.amount}
-              onChange={handleChange}
-              placeholder="Amount"
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
-            />
-            <input
-              type="text"
-              name="payment"
-              value={formData.payment}
-              onChange={handleChange}
-              placeholder="Payment Status"
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#9C27B0]"
-            /> */}
             <select
               name="status"
               value={formData.status}
@@ -272,12 +196,6 @@ const ManageOrders = () => {
                     >
                       Edit
                     </button>
-                    {/* <button
-                      onClick={() => handleDelete(order.order_id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                    >
-                      Delete
-                    </button> */}
                   </td>
                 </tr>
               ))

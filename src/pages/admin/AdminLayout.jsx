@@ -1,5 +1,3 @@
-// src/pages/admin/AdminLayout.jsx
-import React from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 const accent = "#9C27B0";
@@ -16,7 +14,6 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen flex bg-slate-50">
-      {/* Sidebar */}
       <aside className="w-64 bg-white shadow-md border-r">
         <div className="p-6 flex items-center gap-3 border-b">
           <div className="w-10 h-10 rounded-lg bg-[#9C27B0] flex items-center justify-center text-white font-bold">
@@ -89,9 +86,7 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* Main content area */}
       <div className="flex-1 p-6">
-        {/* Topbar */}
         <header className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>

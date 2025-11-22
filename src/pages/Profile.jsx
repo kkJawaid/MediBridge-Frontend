@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate, Outlet } from "react-router-dom";
@@ -16,7 +16,7 @@ const Profile = () => {
       <Navbar />
       <div className="bg-white rounded-2xl shadow-md mb-6">
         <div className="flex border-b">
-          {["Bookmarks", "Reviews", "Orders", "Complaints"].map((tab) => (
+          {["Bookmarks", "Reviews", "Orders"].map((tab) => (
             <button
               key={tab}
               onClick={() => handleTabClick(tab)}

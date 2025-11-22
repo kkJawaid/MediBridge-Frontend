@@ -1,9 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function formatDate(dateString) {
     const d = new Date(dateString);
@@ -29,7 +24,6 @@ const Order = () => {
                 }
             })
             const data = await res.json();
-            console.log(data);
             setOrders(data);
 
         }

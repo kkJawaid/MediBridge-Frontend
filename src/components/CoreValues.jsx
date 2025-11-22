@@ -1,5 +1,4 @@
 // src/components/CoreValues.jsx
-import React from "react";
 import { Heart, Shield, Users, Stethoscope } from "lucide-react";
 
 const iconColor = "#B896C3"; // soft purple for icons

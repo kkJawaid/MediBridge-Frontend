@@ -1,8 +1,6 @@
-// src/pages/Home.jsx
-import React from "react";
 import Navbar from "../components/Navbar";
 import "./Home.css";
-import dnaImage from "../assets/dna.png"; // add image in src/assets
+import dnaImage from "../assets/dna.png"; 
 
 const Home = () => {
   return (

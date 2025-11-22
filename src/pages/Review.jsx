@@ -1,31 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import {  useEffect, useState } from "react";
 
-//edit
-// export async function addBookmark(item) {
-//     const user = JSON.parse(localStorage.getItem("user"));
-//     const token = user?.token;
-//     const res = await fetch(`http://localhost:5020/api/products/${item.product_id}/bookmark/add`, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`
-//         }
-//     })
-//     const data = await res.json();
-//     return data;
-// }
 
 const Review = () => {
-    // const navigate = useNavigate();
-    // const goToProduct = (id) => {
-    //     navigate(`/product/${id}`);
-    // }
-
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
@@ -48,9 +24,7 @@ const Review = () => {
     //to remove bookmark
     async function removeReview(item) {
         const user = JSON.parse(localStorage.getItem("user"));
-        console.log("user", user);
         const token = user?.token;
-        console.log("token", token)
         const res = await fetch(`http://localhost:5020/api/reviews/deleteReview`, {
             method: "DELETE",
             headers: {
@@ -60,7 +34,6 @@ const Review = () => {
             body: JSON.stringify({ id: item.review_id })
         })
         const data = await res.json();
-        //check
         setReviews(reviews.filter(review => review.review_id !== item.review_id))
     }
 
@@ -88,7 +61,7 @@ const Review = () => {
                                     </div>
                                     <div className="text-right">
                                         <p className="text-2xl font-bold text-[#A36DBD]">
-                                            Rs.{item.product.price}
+                                            ${item.product.price}
                                         </p>
                                     </div>
                                 </div>

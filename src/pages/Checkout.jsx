@@ -1,5 +1,5 @@
 // src/pages/Checkout.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -8,8 +8,6 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { toast } from "react-hot-toast";
 
 const Checkout = () => {
-  const [showSuccess, setShowSuccess] = useState(false);
-  //message to user when item added
   const showToast = (msg) =>
     toast.success(msg, {
       duration: 2000,
@@ -42,14 +40,12 @@ const Checkout = () => {
     });
     const { clientSecret } = await res.json();
     console.log("client secret: ", clientSecret);
-    // 2. Confirm card payment
     const result = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
       },
     });
 
-    // 3. Handle result
     if (result.error) {
       console.log("Payment failed:", result.error.message);
       showToast(`Payment failed`);
@@ -80,14 +76,8 @@ const Checkout = () => {
     phone: "",
     address: "",
     city: "",
-    postalCode: "",
   });
   const [errors, setErrors] = useState({});
-
-  const handleCardChange = (e) => {
-    const { name, value } = e.target;
-    setCardInfo((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleDeliveryChange = (e) => {
     const { name, value } = e.target;
@@ -119,9 +109,6 @@ const Checkout = () => {
       newErrors.phone = "Phone must be 10 digits";
     if (!deliveryInfo.address.trim()) newErrors.address = "Address required";
     if (!deliveryInfo.city.trim()) newErrors.city = "City required";
-    if (!/^\d{5,6}$/.test(deliveryInfo.postalCode))
-      newErrors.postalCode = "Valid postal code required";
-
     // Card validations if card selected
     if (paymentMethod === "card") {
       if (!cardInfo.name.trim()) newErrors.cardName = "Cardholder name required";
@@ -231,18 +218,6 @@ const Checkout = () => {
               {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
             </div>
 
-            <div>
-              <input
-                type="text"
-                name="postalCode"
-                placeholder="Postal Code"
-                value={deliveryInfo.postalCode}
-                onChange={handleDeliveryChange}
-                className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-teal-200"
-              />
-              {errors.postalCode && <p className="text-red-500 text-sm mt-1">{errors.postalCode}</p>}
-            </div>
-
             <div className="md:col-span-2">
               <input
                 type="text"
@@ -256,91 +231,6 @@ const Checkout = () => {
             </div>
           </div>
 
-          {/* <h2 className="text-xl font-semibold text-[#0f766e] mb-4">Payment Method</h2>
-          <div className="flex gap-4 mb-4">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                value="card"
-                checked={paymentMethod === "card"}
-                onChange={() => setPaymentMethod("card")}
-              />
-              Credit/Debit Card
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                value="upi"
-                checked={paymentMethod === "upi"}
-                onChange={() => setPaymentMethod("upi")}
-              />
-              UPI / Other
-            </label>
-          </div>
-
-          {paymentMethod === "card" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Cardholder Name"
-                  value={cardInfo.name}
-                  onChange={handleCardChange}
-                  className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-teal-200"
-                />
-                {errors.cardName && <p className="text-red-500 text-sm mt-1">{errors.cardName}</p>}
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  name="cardNumber"
-                  placeholder="Card Number"
-                  value={cardInfo.cardNumber}
-                  onChange={handleCardChange}
-                  className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-teal-200"
-                />
-                {errors.cardNumber && <p className="text-red-500 text-sm mt-1">{errors.cardNumber}</p>}
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  name="expiry"
-                  placeholder="Expiry (MM/YY)"
-                  value={cardInfo.expiry}
-                  onChange={handleCardChange}
-                  className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-teal-200"
-                />
-                {errors.expiry && <p className="text-red-500 text-sm mt-1">{errors.expiry}</p>}
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  name="cvv"
-                  placeholder="CVV"
-                  value={cardInfo.cvv}
-                  onChange={handleCardChange}
-                  className= "border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-teal-200" />
-                {errors.cvv && <p className="text-red-500 text-sm mt-1">{errors.cvv}</p>}
-
-              </div>
-            </div>
-          )} */}
-
-          {/* {paymentMethod === "upi" && (
-          <div className="mb-4">
-            <input
-              type="text"
-              name="upiId"
-              placeholder="Enter UPI ID"
-              className="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-teal-200"
-              required
-            />
-          </div>
-        )} */}
           <CardElement></CardElement>
           <button
             type="submit"

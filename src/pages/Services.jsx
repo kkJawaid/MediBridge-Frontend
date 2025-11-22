@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Filter, Search, X } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-//import { useCart } from "../context/CartContext";
-//import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const Services = () => {
   const navigate = useNavigate();
-  //const { addToCart } = useCart();
   const [servicesData, setServicesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -20,64 +17,6 @@ const Services = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  // const servicesData = [
-  //   {
-  //     id: 1,
-  //     name: "MRI Scan",
-  //     category: "Imaging",
-  //     buyPrice: 5000,
-  //     available: true,
-  //     image:
-  //       "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1200",
-  //     description: "High-resolution imaging for brain, spine, and joints.",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Physiotherapy Session",
-  //     category: "Rehabilitation",
-  //     buyPrice: 100,
-  //     available: true,
-  //     image:
-  //       "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200",
-  //     description: "Personalized treatment for recovery and mobility.",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Blood Test Package",
-  //     category: "Diagnostic",
-  //     buyPrice: 200,
-  //     available: true,
-  //     image:
-  //       "https://images.unsplash.com/photo-1582719471137-c3967ffb1c42?w=1200",
-  //     description: "Comprehensive blood testing for general health.",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Emergency Consultation",
-  //     category: "Emergency",
-  //     buyPrice: 150,
-  //     available: false,
-  //     image:
-  //       "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1200",
-  //     description: "Immediate access to certified emergency physicians.",
-  //   },
-  // ];
-
-  // const showToast = (msg) =>
-  //   toast.success(msg, {
-  //     duration: 2000,
-  //     position: "top-center",
-  //     style: {
-  //       border: "1px solid #A36DBD",
-  //       background: "#fff",
-  //       color: "#4B2A63",
-  //       fontWeight: 500,
-  //       fontSize: "14px",
-  //       padding: "12px 18px",
-  //       borderRadius: "10px",
-  //     },
-  //     icon: "🛒",
-  //   });
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -103,15 +42,6 @@ const Services = () => {
   }, []);
 
   const goToProduct = (id) => {
-    // const cartItem = {
-    //   ...item,
-    //   price: item.buyPrice,
-    //   quantity: 1,
-    //   type: "buy",
-    //   itemType: "service",
-    // };
-    // addToCart(cartItem);
-    //showToast(`${item.name} has been successfully added to your cart.`);
     navigate(`/product/${id}`);
   };
 

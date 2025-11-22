@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Filter, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
-//import { useCart } from "../context/CartContext";
-//import { toast } from "react-hot-toast";
 
 const Equipment = () => {
-  //const {addToCart } = useCart();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("buy");
   const [equipmentData, setEquipmentData] = useState([]);
@@ -24,74 +21,6 @@ const Equipment = () => {
   const goToProduct = (id) => {
     navigate(`/product/${id}`);
   }
-  // const equipmentData = [
-  //   {
-  //     id: 1,
-  //     name: "Patient Monitor",
-  //     category: "Diagnostic",
-  //     buyPrice: 2500,
-  //     rentPrice: 150,
-  //     type: "rent" | "buy",
-  //     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400",
-  //     available: true,
-  //     specs: '12" display, ECG, SpO2, NIBP monitoring',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Ultrasound Machine",
-  //     category: "Imaging",
-  //     buyPrice: 15000,
-  //     rentPrice: 800,
-  //     type: "rent" | "buy",
-  //     image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=400",
-  //     available: true,
-  //     specs: "Color Doppler, 3D/4D imaging capability",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Surgical Table",
-  //     category: "Surgery",
-  //     buyPrice: 8000,
-  //     rentPrice: 400,
-  //     type: "rent" | "buy",
-  //     image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400",
-  //     available: true,
-  //     specs: "Electric height adjustment, radiolucent top",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Defibrillator",
-  //     category: "Emergency",
-  //     buyPrice: 3500,
-  //     rentPrice: 200,
-  //     type: "rent" | "buy",
-  //     image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400",
-  //     available: false,
-  //     specs: "Automatic external, biphasic waveform",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "X-Ray Machine",
-  //     category: "Imaging",
-  //     buyPrice: 45000,
-  //     rentPrice: 2000,
-  //     type: "rent" | "buy",
-  //     image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400",
-  //     available: true,
-  //     specs: "Digital radiography, portable design",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Infusion Pump",
-  //     category: "Patient Care",
-  //     type: "rent" | "buy",
-  //     buyPrice: 1200,
-  //     rentPrice: 80,
-  //     image: "https://images.unsplash.com/photo-1582719471137-c3967ffb1c42?w=400",
-  //     available: true,
-  //     specs: "Programmable flow rates, alarm system",
-  //   },
-  // ];
   useEffect(() => {
     const fetchEquipment = async () => {
       try {
@@ -117,34 +46,6 @@ const Equipment = () => {
     };
     fetchEquipment();
   }, [activeTab]);
-
-  // const handleAddToCart = (item, type) => {
-  //   const cartItem = {
-  //     ...item,
-  //     type,
-  //     price: type === "buy" ? item.buyPrice : item.rentPrice,
-  //     quantity: 1,
-  //     itemType: "equipment",   // 👈 new field to distinguish in Cart
-  //   };
-  //   addToCart(cartItem);
-
-  //   // Show success message
-  //   toast.success(`${item.name} has been successfully added to your cart.`, {
-  //      duration: 2000,
-  //   position: "top-center",
-  //   style: {
-  //     border: "1px solid #A36DBD",
-  //     background: "#fff",
-  //     color: "#4B2A63",
-  //     fontWeight: 500,
-  //     fontSize: "14px",
-  //     padding: "12px 18px",
-  //     borderRadius: "10px",
-  //   },
-  //   icon: "🛒",
-  //   });
-  // };
-
 
   const handleFilterChange = (filterType, value) => {
     setSelectedFilters({ ...selectedFilters, [filterType]: value });
@@ -252,9 +153,9 @@ const Equipment = () => {
                     {filter === "priceRange" && (
                       <>
                         <option value="all">All Prices</option>
-                        <option value="low">Under Rs.5,000</option>
-                        <option value="medium">Rs.5,000 - Rs.20,000</option>
-                        <option value="high">Over Rs.20,000</option>
+                        <option value="low">Under $5,000</option>
+                        <option value="medium">$5,000 - $20,000</option>
+                        <option value="high">Over $20,000</option>
                       </>
                     )}
                     {filter === "availability" && (
@@ -308,9 +209,9 @@ const Equipment = () => {
                     className="w-full px-3 py-2 border border-[#B896C3] text-[#A36DBD] rounded-lg focus:ring-2 focus:ring-[#A36DBD] focus:border-transparent"
                   >
                     <option value="all">All Prices</option>
-                    <option value="low">Under Rs.5,000</option>
-                    <option value="medium">Rs.5,000 - Rs.20,000</option>
-                    <option value="high">Over Rs.20,000</option>
+                    <option value="low">Under $5,000</option>
+                    <option value="medium">$5,000 - $20,000</option>
+                    <option value="high">Over $20,000</option>
                   </select>
                 </div>
 
@@ -396,7 +297,7 @@ const Equipment = () => {
                       </div>
                       <div className="text-right">
                         <p className="text-2xl font-bold text-[#A36DBD]">
-                          Rs.
+                          $
                           {activeTab === "buy"
                             ? item.buyPrice.toLocaleString()
                             : item.rentPrice.toLocaleString()}

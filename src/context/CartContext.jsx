@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 
 const CartContext = createContext();
@@ -41,13 +41,9 @@ export const CartProvider = ({ children }) => {
     if (data == "already in cart!") {
       return data;
     }
-
-    //   if (!res.ok) {
-    //     const errorData = await res.json();
-    //     console.error("Add to cart failed:", errorData.error);
-    //     return;
-    // }
-
+    else {
+      showToast(`${item.name} added successfully to cart.`);
+    }
     const existingItem = cartItems.find(
       (cartItem) => cartItem.id === item.id && cartItem.type === item.type
     );
@@ -63,11 +59,9 @@ export const CartProvider = ({ children }) => {
     } else {
       setCartItems((prev) => [...prev, { ...item, quantity: 1 }]);
     }
-    // fetchCart();
   };
 
   const removeFromCart = async (id, type) => {
-    console.log(id);
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
     const res = await fetch(`http://localhost:5020/api/cart/${id}/deleteItem`, {

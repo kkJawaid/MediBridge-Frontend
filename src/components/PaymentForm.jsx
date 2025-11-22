@@ -1,5 +1,4 @@
-// src/components/PaymentForm.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 
 const PaymentForm = ({ onPaymentSuccess }) => {
   const [form, setForm] = useState({ name: "", card: "", expiry: "", cvv: "" });

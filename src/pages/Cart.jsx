@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -15,11 +15,9 @@ const Cart = () => {
     increaseQuantity,
     decreaseQuantity,
   } = useCart();
-  //const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   
-  //use effect
   const fetchCart = async () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -35,7 +33,6 @@ const Cart = () => {
 
         const data = await res.json();
         setCartItems(data.products);
-        console.log(data);
         setTotalPrice(data.totalPrice);
       } catch(err) {
         console.log("error: ", err);
@@ -136,7 +133,7 @@ const Cart = () => {
               <p className="text-lg font-semibold text-gray-700">
                 Total:{" "}
                 <span className="text-[#A36DBD]">
-                  Rs.{getTotalPrice().toLocaleString()}
+                  ${getTotalPrice().toLocaleString()}
                 </span>
               </p>
 

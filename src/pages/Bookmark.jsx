@@ -1,8 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export async function addBookmark(item) {
@@ -50,9 +46,7 @@ const Bookmark = () => {
     //to remove bookmark
     async function removeBookmark(item) {
         const user = JSON.parse(localStorage.getItem("user"));
-        console.log("user", user);
         const token = user?.token;
-        console.log("token", token)
         const res = await fetch(`http://localhost:5020/api/products/${item.product_id}/bookmark/remove`, {
             method: "PUT",
             headers: {
@@ -93,20 +87,12 @@ const Bookmark = () => {
                                     <p className="text-sm text-gray-500">{item.product.category}</p>
                                 </div>
                                 <div className="text-right">
-                                    {/* <p className="text-2xl font-bold text-[#A36DBD]">
-                                        Rs.
-                                        {activeTab === "buy"
-                                            ? item.buyPrice.toLocaleString()
-                                            : item.rentPrice.toLocaleString()}
-                                    </p> */}
                                     <p className="text-2xl font-bold text-[#A36DBD]">
-                                        Rs.{item.product.price}
+                                    ${item.product.price}
                                     </p>
-                                    {/* <p className="text-xs text-gray-500">{activeTab === "rent" && "/month"}</p> */}
                                 </div>
                             </div>
                             <button
-                                //onClick={() => handleAddToCart(item, activeTab)}
                                 onClick={() => goToProduct(item.product.product_id)}
                                 disabled={!item.product.is_available}
                                 className={`w-full mt-4 py-2 rounded-lg font-medium transition ${item.product.is_available
@@ -117,7 +103,6 @@ const Bookmark = () => {
                                 {item.product.is_available ? "View Product" : "Currently Unavailable"}
                             </button>
                             <button
-                                //onClick={() => handleAddToCart(item, activeTab)}
                                 onClick={() => removeBookmark(item)}
                                 disabled={!item.product.is_available}
                                 className={`w-full mt-4 py-2 rounded-lg font-medium transition ${item.product.is_available

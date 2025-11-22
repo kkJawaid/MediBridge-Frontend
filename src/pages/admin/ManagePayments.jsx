@@ -1,5 +1,4 @@
-// src/pages/admin/ManagePayments.jsx
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { format } from "date-fns";
 
 const ManagePayments = () => {
@@ -92,14 +91,6 @@ const ManagePayments = () => {
                     <td className="border p-3">
                       {format(payment.payment_date, "dd MMM yyyy")}
                     </td>
-                    {/* <td className="border p-3">
-                      <button
-                        onClick={() => alert("View details coming soon")}
-                        className="bg-[#9C27B0] text-white px-4 py-1 rounded-lg hover:bg-[#7B1FA2] transition"
-                      >
-                        View
-                      </button>
-                    </td> */}
                   </tr>
                 ))
               ) : (
