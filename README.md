@@ -10,4 +10,4 @@ This is the frontend for our Medibridge E-Commerce Solution that aims to make he
 # Running:
 - npm install
 - npm run dev
-Note: Make sure localhost:5173 does not have an exisiting process running.
+- Note: Make sure localhost:5173 does not have an exisiting process running.
