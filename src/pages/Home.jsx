@@ -3,15 +3,9 @@ import Navbar from "../components/Navbar";
 import CoreValues from "../components/CoreValues";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import myImage from "../assets/Purple.jpeg";
+import myImage from "../assets/doctors.jpg";
 export default function Home() {
   const vibrantLavender = "#A36DBD";
-  const reviews = [
-    { username: "Alice", comment: "Excellent service!"},
-    { username: "Bob", comment: "Fast and reliable."},
-    { username: "Charlie", comment: "Very satisfied with the product."},
-    { username: "Daisy", comment: "Good experience."},
-  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -57,7 +51,7 @@ export default function Home() {
               className="w-full max-w-md rounded-3xl shadow-lg overflow-hidden relative"
               style={{
                 aspectRatio: "4 / 3",
-                background: "linear-gradient(to bottom right, #CFADE0, #A36DBD)",
+                // background: "linear-gradient(to bottom right, #CFADE0, #A36DBD)",
               }}
             >
               <img
